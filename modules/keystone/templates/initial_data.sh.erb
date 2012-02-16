@@ -1,0 +1,33 @@
+#!/bin/bash
+
+# Tenants
+keystone-manage $* tenant add <%= nova_admin_user %>
+
+# Users
+keystone-manage $* user add <%= nova_admin_user %> <%= nova_admin_password %> <%= nova_admin_user %>
+
+# Roles
+keystone-manage $* role add Admin
+keystone-manage $* role add Member
+keystone-manage $* role grant Admin <%= nova_admin_user %>
+
+<% if has_variable?('glance_swift_user') %>
+#glance->swift user
+keystone-manage tenant add <%= glance_swift_user %>
+keystone-manage user add <%= glance_swift_user %> <%= glance_swift_key %> <%= glance_swift_user %>
+<% end %>
+
+keystone-manage $* service add nova compute "Nova Compute Service"
+keystone-manage $* service add ec2 ec2 "EC2 Compatibility Layer"
+keystone-manage $* service add glance image "Glance Image Service"
+keystone-manage $* service add keystone identity "Keystone Identity Service"
+
+#endpointTemplates
+keystone-manage $* endpointTemplates add RegionOne nova http://<%= api_vip %>:8774/v1.1/%tenant_id% http://<%= api_vip %>:8774/v1.1/%tenant_id%  http://<%= api_vip %>:8774/v1.1/%tenant_id% 1 1
+keystone-manage $* endpointTemplates add RegionOne ec2 http://<%= api_vip %>:8773/services/Cloud http://<%= api_vip %>:8773/services/Admin http://<%= api_vip %>:8773/services/Cloud 1 1
+keystone-manage $* endpointTemplates add RegionOne glance http://<%= api_vip %>:9292/v1/%tenant_id% http://<%= api_vip %>:9292/v1/%tenant_id% http://<%= api_vip %>:9292/v1/%tenant_id% 1 1
+keystone-manage $* endpointTemplates add RegionOne keystone http://<%= api_vip %>:5000/v2.0 http://<%= api_vip %>:35357/v2.0 http://<%= api_vip %>:5000/v2.0 1 1
+
+# Tokens
+keystone-manage $* token add <%= keystone_admin_token %> <%= nova_admin_user %> <%= nova_admin_user %> 2028-02-05T00:00
+keystone-manage $* credential add <%= nova_admin_user %> EC2 '<%= nova_admin_user %>' '<%= nova_admin_password %>' <%= nova_admin_user %>

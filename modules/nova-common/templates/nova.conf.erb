@@ -1,0 +1,65 @@
+--dhcpbridge_flagfile=/etc/nova/nova.conf
+--dhcpbridge=/usr/bin/nova-dhcpbridge
+--logdir=/var/log/nova
+--state_path=/var/lib/nova
+--lock_path=/var/lock/nova
+--force_dhcp_release
+--iscsi_helper=tgtadm
+--connection_type=libvirt
+--sql_connection=mysql://nova:<%= mysql_nova_password %>@<%= mysql_vip %>/nova
+--rabbit_host=<%= rabbit_vip %>
+--image_service=nova.image.glance.GlanceImageService
+
+--glance_api_servers=<%= glance_vip %>:9292
+
+--ec2_host=<%= api_vip %>
+
+--use_deprecated_auth
+--verbose
+--cc_host=<%= api_vip %>
+--api_paste_config=/etc/nova/api-paste.ini
+--network_manager=nova.network.manager.<%= network_manager %>
+<% if has_variable?('network_host') and network_host then -%>
+--network_host=<% network_host %>
+<% end %>
+<% if has_variable?('scheduler') and scheduler then -%>
+--scheduler_driver=<%= scheduler %>
+<% else %>
+--scheduler_driver=nova.scheduler.simple.SimpleScheduler
+<% end %>
+<% if has_variable?('flat_interface') then -%>
+--flat_interface=<%= flat_interface %>
+<% end -%>
+<% if has_variable?('use_ec2') and use_ec2 then -%>
+--ec2_url=http://<%= api_vip %>:8773/services/Cloud
+<% end -%>
+<% if has_variable?('use_s3') and use_s3 then -%>
+--s3_host=<%= api_vip %>
+<% end -%>
+<% if has_variable?('fixed_range') -%>
+--fixed_range=<%= fixed_range %>
+<% end %>
+<% if has_variable?('floating_range') -%>
+--floating_range=<%= floating_range %>
+<% end %>
+<% if has_variable?('public_interface') -%>
+--public_interface=<%= public_interface %>
+<% end %>
+<% if has_variable?('vlan_interface') -%>
+--vlan_interface=<%= vlan_interface %>
+<% end %>
+<% if has_variable?('vlan_start') -%>
+--vlan_start=<%= vlan_start %>
+<% end %>
+<% if has_variable?('num_networks') -%>
+--num_networks=<%= num_networks %>
+<% end %>
+<% if has_variable?('dhcp_start') -%>
+--flat_network_dhcp_start=<%= dhcp_start %>
+<% end %>
+<% if has_variable?('use_ipv6') and use_ipv6 then -%>
+--use_ipv6
+<% end -%>
+<% if has_variable?('public_interface') and public_interface then -%>
+--public_interface=<%= public_interface %>
+<% end -%>
