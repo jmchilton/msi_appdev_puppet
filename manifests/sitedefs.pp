@@ -2,6 +2,7 @@
 
 class base-node {
   include sysctl
+  include sudo
   include appdev_users
 }
 
