@@ -28,7 +28,7 @@ class appdev_users {
   @user { "nh":
     ensure => "present",
     groups => ["sudo"],
-    requier => Group["sudo"],
+    require => Group["sudo"],
   }
 
 }
