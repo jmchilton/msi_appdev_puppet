@@ -1,9 +1,11 @@
 class appdev_users {
-  realize(User["chilton"], User["blynch"], User["trevor"])
+  realize(User["chilton"], User["blynch"], User["trevor"], User["nh"])
+  include appdev_users::credentials
 
-  setpass { "chilton": hash => $password_hash_chilton }
-  setpass { "blynch" : hash => $password_hash_blynch }
-  setpass { "trevor" : hash => $password_hash_trevor }
+  setpass { "chilton": hash => $appdev_users::credentials::password_hash_chilton }
+  setpass { "blynch" : hash => $appdev_users::credentials::password_hash_blynch }
+  setpass { "trevor" : hash => $appdev_users::credentials::password_hash_trevor }
+  setpass { "nh"     : hash => $appdev_users::credentials::password_hash_nh }
 
   @user { "chilton" :
     ensure => "present",
@@ -21,6 +23,12 @@ class appdev_users {
     ensure => "present",
     groups =>  ["sudo"], 
     require => Group["sudo"],
+  }
+
+  @user { "nh":
+    ensure => "present",
+    groups => ["sudo"],
+    requier => Group["sudo"],
   }
 
 }
