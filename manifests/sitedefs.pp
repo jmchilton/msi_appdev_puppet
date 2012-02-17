@@ -2,6 +2,7 @@
 
 class base-node {
   include sysctl
+  include appdev_users
 }
 
 class nova-base-node {
