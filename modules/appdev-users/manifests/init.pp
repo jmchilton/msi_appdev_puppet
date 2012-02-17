@@ -35,9 +35,9 @@ define setpass($hash, $file='/etc/shadow') {
 }
 
 
-class appdev_users {
+class appdev-users {
   realize(User["chilton"], User["blynch"], User["trevor"], User["nh"])
-  include appdev_users::credentials
+  include appdev-users::credentials
 
   setpass { "chilton": hash => $appdev_users::credentials::password_hash_chilton }
   setpass { "blynch" : hash => $appdev_users::credentials::password_hash_blynch }
