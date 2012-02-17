@@ -15,8 +15,13 @@ node 'spider.msi.umn.edu' {
      $dhcp_start= "10.1.0.2"
      $newtork_host = "spider"
      $public_interface = "eth0"
-     package { memcached: }
+     #package { memcached: }
 
-     include "nova-infra-node"
+     include 'appdev-base'
+     #include "nova-infra-node"
      #include "nova-compute-node"
+}
+
+node 'spider-services.msi.umn.edu' {
+     include 'appdev-base'
 }
