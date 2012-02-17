@@ -39,10 +39,10 @@ class appdev-users {
   realize(User["chilton"], User["blynch"], User["trevor"], User["nh"])
   include appdev-users::credentials
 
-  setpass { "chilton": hash => $appdev_users::credentials::password_hash_chilton }
-  setpass { "blynch" : hash => $appdev_users::credentials::password_hash_blynch }
-  setpass { "trevor" : hash => $appdev_users::credentials::password_hash_trevor }
-  setpass { "nh"     : hash => $appdev_users::credentials::password_hash_nh }
+  setpass { "chilton": hash => $appdev-users::credentials::password_hash_chilton }
+  setpass { "blynch" : hash => $appdev-users::credentials::password_hash_blynch }
+  setpass { "trevor" : hash => $appdev-users::credentials::password_hash_trevor }
+  setpass { "nh"     : hash => $appdev-users::credentials::password_hash_nh }
 
   @user { "chilton" :
     ensure => "present",
