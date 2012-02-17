@@ -7,14 +7,20 @@ class appdev_users {
 
   @user { "chilton" :
     ensure => "present",
+    groups =>  ["sudo"],
+    require => Group["sudo"],
   }
 
   @user { "trevor" :
     ensure => "present",
+    groups =>  ["sudo"],
+    require => Group["sudo"],
   }
 
   @user { "blynch":
     ensure => "present",
+    groups =>  ["sudo"], 
+    require => Group["sudo"],
   }
 
 }
