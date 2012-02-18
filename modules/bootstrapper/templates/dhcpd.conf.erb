@@ -29,22 +29,36 @@ max-lease-time 64281600;
 log-facility local7;                                                  
 
 
+
 subnet 172.0.0.0 netmask 255.255.255.0 {
   option routers 172.0.0.1;             
   option broadcast-address 172.0.0.255; 
+  option domain-name "msi.umn.edu"
   filename "pxelinux.0";                
   deny unknown-clients;  
 
-  host node01 {
+  host node00 {
     hardware ethernet 00:30:48:7F:C4:1A;
+    fixed-address node00;
+    option host-name spider00;
+  }
+
+  host node01 {
+    hardware ethernet 00:30:48:C4:79:40;
     fixed-address node01;
-    option host-name node01;
+    option host-name spider01;
   }
 
   host node02 {
-    hardware ethernet 00:30:48:C4:79:40;
+    hardware ethernet 00:30:48:7F:C4:32;
     fixed-address node02;
-    option host-name node02;
+    option host-name spider02;
+  }
+
+  host node3 {
+    hardware ethernet 00:30:48:7F:C3:4C;
+    fixed-address node03;       
+    option host-name spider03;
   }
 
 }
