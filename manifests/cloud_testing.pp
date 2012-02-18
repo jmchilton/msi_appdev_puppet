@@ -15,6 +15,7 @@ node 'appdev-dom0.msi.umn.edu' {
      $public_interface = "eth0"
      package { memcached: }
 
+     include "sshd"
      include "debootstrap"
      include "nova-infra-node"
      include "nova-compute-node"
