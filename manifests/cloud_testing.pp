@@ -1,6 +1,4 @@
-import "basic.pp"
 import "sitedefs.pp"
-import "credentials.pp"
 
 node 'appdev-dom0.msi.umn.edu' {
      $nova_admin_user = "admin"
