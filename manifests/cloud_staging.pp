@@ -17,6 +17,7 @@ node 'spider.msi.umn.edu' {
      #package { memcached: }
 
      include 'appdev-base'
+     include 'bootstrapper'
      #include "nova-infra-node"
      #include "nova-compute-node"
 }
