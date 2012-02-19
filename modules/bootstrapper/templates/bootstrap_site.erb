@@ -1,0 +1,10 @@
+<VirtualHost 172.0.0.1:80>
+  DocumentRoot /var/www/bootstrap
+  
+  <Directory /var/www/bootstrap>
+    Order Deny,Allow
+    Deny from all
+    Allow from 172.0.0.0/24
+  </Directory>
+
+</VirtualHost>
