@@ -2,7 +2,7 @@
 TFTP_DIR=/srv/tftpboot
 INITRD_PATH=$TFTP_DIR/debian-installer/amd64/initrd.gz
 cd $TFTP_DIR
-NETBOOT_URL="http://d-i.debian.org/daily-images/amd64/daily/netboot/netboot.tar.gz"
+$NETBOOT_URL="http://d-i.debian.org/daily-images/amd64/daily/netboot/netboot.tar.gz"
 wget NETBOOT_URL -O netboot.tar.gz
 tar xzvf netboot.tar.gz
 mkdir init-root
