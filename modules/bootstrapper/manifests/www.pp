@@ -1,4 +1,4 @@
-class bootstraper::www {
+class bootstrapper::www {
 
   file { "/var/www-bootstrap":
     ensure => directory,
