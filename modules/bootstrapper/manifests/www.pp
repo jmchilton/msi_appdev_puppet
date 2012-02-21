@@ -1,5 +1,4 @@
 class bootstrapper::www {
-  include apache2
 
   file { "/var/www-bootstrap":
     ensure => directory,
