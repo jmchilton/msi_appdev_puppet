@@ -2,6 +2,7 @@ class apache2 {
   include apache2::install, apache2::service, apache2::config-vhosts
 
   define site($sitedomain = "", $documentroot = "", $vhosttemplate = "") {
+    include apache2 
 
     if $sitedomain == "" {
       $vhost_domain = $name
