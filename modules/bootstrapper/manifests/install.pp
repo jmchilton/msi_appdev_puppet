@@ -21,7 +21,7 @@ class bootstrapper::install {
   } 
 
   exec { "build_installer":
-    command => /srv/tftpboot/rebuild_image.sh",
+    command => "/srv/tftpboot/rebuild_image.sh",
     path => [ "/bin", "/usr/bin" ],
     subscribe => File["preseed.cfg"],
     refreshonly => true,
