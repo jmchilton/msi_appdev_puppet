@@ -34,38 +34,44 @@ define setpass($hash, $file='/etc/shadow') {
     }
 }
 
+define user_hash ($hash) {
+  user { "$name":
+    home => "/home/$name"
+    ensure => present,
+    groups => ["sudo"]
+    require => Group["sudo"]
+  }
+
+  exec { "$name homedir":
+    command => "cp -R /etc/skel /home/$name; chown -R $name /home/$name",
+    path => "/bin:/usr/sbin",
+    creates => "/home/$name",
+    require => User[$name],
+  }
+
+  set_pass { "$name":
+    hash => $hash,
+    require => User[$name],
+  }
+
+}
 
 class appdev-users {
-  realize(User["chilton"], User["blynch"], User["trevor"], User["nh"])
   include appdev-users::credentials
-
-  setpass { "chilton": hash => $appdev-users::credentials::password_hash_chilton }
-  setpass { "blynch" : hash => $appdev-users::credentials::password_hash_blynch }
-  setpass { "trevor" : hash => $appdev-users::credentials::password_hash_trevor }
-  setpass { "nh"     : hash => $appdev-users::credentials::password_hash_nh }
-
-  @user { "chilton" :
-    ensure => "present",
-    groups =>  ["sudo"],
-    require => Group["sudo"],
+  user_hash { "chilton": 
+    hash => $appdev-users::credentials::password_hash_chilton,
   }
 
-  @user { "trevor" :
-    ensure => "present",
-    groups =>  ["sudo"],
-    require => Group["sudo"],
+  user_hash { "blynch":
+    hash => $appdev-users::credentials::password_hash_blynch,
   }
 
-  @user { "blynch":
-    ensure => "present",
-    groups =>  ["sudo"], 
-    require => Group["sudo"],
+  user_hash { "trevor":
+    hash => $appdev-users::credentials::password_hash_trevor,
   }
 
-  @user { "nh":
-    ensure => "present",
-    groups => ["sudo"],
-    require => Group["sudo"],
+  user_hash { "nh" :
+    hash => $appdev-users::credentials::passwrod_hash_nh,
   }
 
 }
