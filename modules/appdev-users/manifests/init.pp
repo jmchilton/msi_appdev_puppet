@@ -36,11 +36,11 @@ define setpass($hash, $file='/etc/shadow') {
 
 define user_hash ($hash) {
   user { "$name":
-    home => "/home/$name"
+    home => "/home/$name",
     ensure => present,
-    groups => ["sudo"]
-    require => Group["sudo"]
-    shell => "/bin/bash"
+    groups => ["sudo"],
+    require => Group["sudo"],
+    shell => "/bin/bash",
   }
 
   exec { "$name homedir":
