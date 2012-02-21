@@ -8,7 +8,7 @@ class bootstrapper::install {
   }
 
   exec { "configure_installer":
-    command => "/srv/tftpboot/configure_installer.sh"
+    command => "/srv/tftpboot/configure_installer.sh",
     path => [ "/bin", "/usr/bin" ],
     creates => "/srv/tftpboot/rebuild_image.sh",
     require => File["configure_installer.sh"],
