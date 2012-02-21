@@ -1,4 +1,7 @@
 class bootstrapper {
-  include apache2
-  include bootstrapper::install, bootstrapper::service
+  include dhcp-server
+  include tftp
+  include bootstrapper::firewall
+  include bootstrapper::install
+  include bootstrapper::www
 }

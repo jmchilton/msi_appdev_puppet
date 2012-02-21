@@ -1,4 +1,4 @@
-class bootstrapper::service {
+class dhcp-server::service {
 
   service { "isc-dhcp-server":
     subscribe => File["dhcpd.conf"],
