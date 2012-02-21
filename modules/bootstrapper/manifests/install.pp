@@ -18,8 +18,17 @@ class bootstrapper::install {
   file { "preseed.cfg":
     path => "/srv/tftpboot/init-root/preseed.cfg",
     content => template('bootstrapper/preseed.cfg.erb'),
+    subscribe => Exec["configure_installer"],
     require => Exec["configure_installer"],
   } 
+
+  file { "pxelinux.cfg":
+    path => "/srv/tftpboot/pxelinux.cfg/default",
+    content => template("bootstrapper/pxelinux.cfg.erb"),
+    subscribe => Exec["configure_installer"],
+    require => Exec["configure_installer"],
+  }
+
 
   exec { "build_installer":
     command => "/srv/tftpboot/rebuild_image.sh",
