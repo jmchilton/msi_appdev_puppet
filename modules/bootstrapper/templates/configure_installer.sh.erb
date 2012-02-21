@@ -12,6 +12,6 @@ cat $INITRD_PATH | gzip -d | cpio -i
 gunzip $INITRD_PATH
 
 REBUILD_SCRIPT=$TFTP_DIR/rebuild_image.sh
-echo "#!/bin/sh\ncd $TFTP_DIR/init-root && find . -print0 | cpio -0 -H newc -ov | gzip -c > $INITRD_PATH" > $REBUILD_SCRIPT
+echo "#!/bin/sh\ncd $TFTP_DIR/init-root && find . -print0 | cpio -0 -H newc -ov | gzip -c > $INITRD_PATH\nexit 0" > $REBUILD_SCRIPT
 chmod +x $REBUILD_SCRIPT
 
