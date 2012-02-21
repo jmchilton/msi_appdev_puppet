@@ -20,6 +20,6 @@ class bootstrapper::www {
     require => File["/var/www-bootstrap"],
   }
 
-  apache::site("172.0.0.1", "/var/www-bootstrap", "bootstrap/bootstrap_site.erb")
+  apache2::site("172.0.0.1", "/var/www-bootstrap", "bootstrap/bootstrap_site.erb")
 
 }
