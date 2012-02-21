@@ -1,56 +1,56 @@
-class keystone::install {
+class keystone::install {                                                                   
 
   user { "keystone":
     ensure => present,
     home => "/var/lib/keystone",
-    shell => "/bin/bash"
-  }
+    shell => "/bin/bash",       
+    require => Package["keystone"],
+  }                                
 
   package { "keystone":
-    ensure => latest,
+    ensure => latest,  
     notify => [Service["nova-api"]],
-    require => [
-      Package["nova-common"],
-      User["keystone"]
-    ]
-  }
+    require => [                    
+      Package["nova-common"],       
+    ]                               
+  }                                 
 
 
   file { "/var/log/keystone":
-    ensure => directory,
-    owner => "keystone",
-    mode => 0755,
+    ensure => directory,     
+    owner => "keystone",     
+    mode => 0755,            
     require => [User["keystone"], Package["keystone"]]
-  }
+  }                                                   
 
 
   file { "keystone.conf":
     path => "/etc/keystone/keystone.conf",
-    ensure => present,
-    owner => "keystone",
-    mode => 0600,
+    ensure => present,                    
+    owner => "keystone",                  
+    mode => 0600,                         
     content => template("keystone/keystone.conf.erb"),
-    notify => Service["keystone"],
-    require => Package["keystone"]
-  }
+    notify => Service["keystone"],                    
+    require => [User["keystone"], Package["keystone"]]
+  }                                                   
 
   file { "add-keystone-user.sh":
     path => "/var/lib/keystone/add-keystone-user.sh",
-    ensure => present,
-    owner => "keystone",
-    mode => 0700,
+    ensure => present,                               
+    owner => "keystone",                             
+    mode => 0700,                                    
     source => "puppet:///modules/keystone/add-keystone-user.sh",
-    notify => Service["keystone"],
-    require => Package["keystone"]
-  }
+    notify => Service["keystone"],                              
+    require => [User["keystone"], Package["keystone"]]          
+  }                                                             
 
   file { "initial_data.sh":
     path => "/var/lib/keystone/initial_data.sh",
-    ensure => present,
-    owner => "keystone",
+    ensure => present,                          
+    owner => "keystone",                        
     mode => 0700,
     content => template("keystone/initial_data.sh.erb"),
-    require => Package["keystone"]
+    require => [User["keystone"], Package["keystone"]]
   }
 
   exec { "create_keystone_db":

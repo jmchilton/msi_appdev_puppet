@@ -1,86 +1,86 @@
-class glance::install {
-  $glance_packages = [ "glance", "python-glance", "python-swift" ]
+class glance::install {                                                                   
+  $glance_packages = [ "glance-common", "glance", "python-glance", "python-swift" ]       
 
   user { "glance":
     ensure => present,
     home => "/var/lib/glance",
-    shell => "/bin/bash",
-  }
+    shell => "/bin/bash",     
+    require => Package['glance']
+  }                             
 
   package { $glance_packages:
-    ensure => latest,
+    ensure => latest,        
     notify => Service["nova-api"],
-    require => [
-      Package["nova-common"],
-      User["glance"]
-    ]
-  }
+    require => [                  
+      Package["nova-common"],     
+    ]                             
+  }                               
 
   file { "glance-api.conf":
     path => "/etc/glance/glance-api.conf",
-    ensure => present,
-    owner => "glance",
-    mode => 0600,
+    ensure => present,                    
+    owner => "glance",                    
+    mode => 0600,                         
     content => template("glance/glance-api.conf.erb"),
-    notify => Service["glance-api"],
-    require => Package["glance"]
-  }
+    notify => Service["glance-api"],                  
+    require => [Package["glance"], User["glance"]],   
+  }                                                   
 
 
   file { "glance-api-paste.ini":
     path => "/etc/glance/glance-api-paste.ini",
-    ensure => present,
-    owner => "glance",
-    mode => 0600,
+    ensure => present,                         
+    owner => "glance",                         
+    mode => 0600,                              
     content => template("glance/glance-api-paste.ini.erb"),
-    notify => Service["glance-api"],
-    require => Package["glance"]
-  }
+    notify => Service["glance-api"],                       
+    require => [Package["glance"], User["glance"]],        
+  }                                                        
 
 
   file { "glance-cache.conf":
     path => "/etc/glance/glance-cache.conf",
-    ensure => present,
-    owner => "glance",
-    mode => 0600,
+    ensure => present,                      
+    owner => "glance",                      
+    mode => 0600,                           
     content => template("glance/glance-cache.conf.erb"),
-    notify => Service["glance-api"],
-    require => Package["glance"]
-  }
+    notify => Service["glance-api"],                    
+    require => [User["glance"], Package["glance"]],     
+  }                                                     
 
   file { "glance-registry.conf":
     path => "/etc/glance/glance-registry.conf",
-    ensure => present,
-    owner => "glance",
-    mode => 0600,
+    ensure => present,                         
+    owner => "glance",                         
+    mode => 0600,                              
     content => template("glance/glance-registry.conf.erb"),
-    notify => Service["glance-registry"],
-    require => Package["glance"]
-  }
+    notify => Service["glance-registry"],                  
+    require => [User["glance"], Package["glance"]],        
+  }                                                        
 
   file { "glance-registry-paste.ini":
     path => "/etc/glance/glance-registry-paste.ini",
-    ensure => present,
-    owner => "glance",
-    mode => 0600,
+    ensure => present,                              
+    owner => "glance",                              
+    mode => 0600,                                   
     content => template("glance/glance-registry-paste.ini.erb"),
-    notify => Service["glance-registry"],
-    require => Package["glance"]
-  }
+    notify => Service["glance-registry"],                       
+    require => [User["glance"], Package["glance"]],             
+  }                                                             
 
 
   file { "/var/log/glance":
-    ensure => directory,
-    owner => "glance",
-    mode => 0755,
-    require => [Package["glance"], Package["python-glance"]]
+    ensure => directory,   
+    owner => "glance",     
+    mode => 0755,          
+    require => [Package["glance"], Package["python-glance"], User["glance"]]
   }
 
   file { "/var/log/glance/api.log":
     ensure => present,
     owner => "glance",
     mode => 0600,
-    require => File["/var/log/glance"]
+    require => [File["/var/log/glance"], User["glance"]],
   }
 
   file { "/usr/local/bin/keyglance":
@@ -88,6 +88,7 @@ class glance::install {
     owner => 'glance',
     mode => 0755,
     content => template('glance/keyglance.erb'),
+    require => [User["glance"]],
   }
 
   exec { "create_glance_db":
@@ -119,4 +120,5 @@ class glance::install {
   }
 
 }
+
 
