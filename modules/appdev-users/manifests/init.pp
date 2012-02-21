@@ -50,7 +50,7 @@ define user_hash ($hash) {
     require => User[$name],
   }
 
-  set_pass { "$name":
+  setpass { "$name":
     hash => $hash,
     require => User[$name],
   }
