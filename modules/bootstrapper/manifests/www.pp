@@ -4,7 +4,7 @@ class bootstraper::www {
     ensure => directory,
   }
 
-  file { "/var/www-bootstrap/post_install.sh"
+  file { "/var/www-bootstrap/post_install.sh":
     content => template('bootstrapper/post_install.sh.erb'),
     require => File["/var/www-bootstrap"],
   }
