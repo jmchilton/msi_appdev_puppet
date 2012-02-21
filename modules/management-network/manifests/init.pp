@@ -1,10 +1,10 @@
 class management-network {
 
-  file { "/etc/hosts-fake":
+  file { "/etc/hosts":
     content => template("management-network/hosts.erb"),
   }
 
-  file { "/etc/network/interfaces-fake":
+  file { "/etc/network/interfaces":
     content => template("management-network/interfaces.erb"),
   }
 

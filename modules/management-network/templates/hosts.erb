@@ -1,5 +1,6 @@
 127.0.0.1       localhost
-128.101.191.208 spider.msi.umn.edu      spider
+<% network.each_pair do |node, node_definition| %><%= node_definition['public_ip'] %> <%= node_definition['hostname'] %>.msi.umn.edu <%= node_definition['hostname'] %>
+<% end %>
 
 # Physical nodes on internal network
 <% network.each_pair do |node, node_definition| %><%= node_definition['management_ip'] %> <%= node %>
