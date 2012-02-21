@@ -1,22 +1,23 @@
 class apache2 {
   include apache2::install, apache2::service, apache2::config-vhosts
 
-  define site($sitedomain = "", $documentroot = "", $vhosttemplate = "") {
-  include apache2
+}
 
-  if $sitedomain = "" {
+define site($sitedomain = "", $documentroot = "", $vhosttemplate = "") {
+
+  if $sitedomain == "" {
     $vhost_domain = $name
   } else {
     $vhost_domain = $sitedomain
   }
 
-  if $documentroot = "" {
+  if $documentroot == "" {
     $vhost_root = "/var/www/${name}"
   } else {
     $vhost_root = $documentroot
   }
 
-  if $vhosttemplate = "" {
+  if $vhosttemplate == "" {
     $vhosttemplate = "apache/vhost.erb"
   }
 
@@ -32,8 +33,6 @@ class apache2 {
                  Package["apache2"]],
     refreshonly => true,
     notify => Service["apache2"],
-  }
-
   }
 
 }
