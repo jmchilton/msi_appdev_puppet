@@ -10,7 +10,7 @@ class bootstrapper::www {
   }
 
   file { "/var/www-bootstrap/puppet_credentials.tar.gz":
-    source => "puppet:///modules/bootstrapper/files/puppet_credentials.tar.gz",
+    source => "puppet:///modules/bootstrapper/puppet_credentials.tar.gz",
     require => File["/var/www-bootstrap"],
   }
 
