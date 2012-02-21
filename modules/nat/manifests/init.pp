@@ -33,9 +33,10 @@ define kern_module ($ensure) {
 }
 
 class nat {
-  file { "/proc/sys/net/ipv4/ip_forward":
-    content => "1",
-  }  
+  exec { "enable ip forward":
+    command => "echo '1' > /proc/sys/net/ipv4/ip_forward",
+  }
 
-  kern_module('iptable_nat')
+  kern_module { 'iptable_nat' : ensure => present, }
+
 }
