@@ -3,6 +3,6 @@
 
 # Physical nodes on internal network
 172.0.0.1 node-management
-<% $compute_nodes.each_pair do |node_suffix, node_definition| %>
+<% compute_nodes.each_pair do |node_suffix, node_definition| %>
 172.0.0.1<%= node_suffix %> node<%= node_suffix %>
 <% end %>
