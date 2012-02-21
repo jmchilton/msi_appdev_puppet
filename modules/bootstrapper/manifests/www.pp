@@ -1,4 +1,5 @@
 class bootstrapper::www {
+  include apache2
 
   file { "/var/www-bootstrap":
     ensure => directory,
@@ -20,6 +21,10 @@ class bootstrapper::www {
     require => File["/var/www-bootstrap"],
   }
 
-  apache2::site("172.0.0.1", "/var/www-bootstrap", "bootstrap/bootstrap_site.erb")
+  apache2::site { "www-bootstrap":
+    sitedomain => "172.0.0.1",
+    documentroot => "/var/www-bootstrap",
+    vhosttemplate => "bootstrapper/bootstrap_site.erb"
+  }
 
 }
