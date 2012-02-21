@@ -28,7 +28,8 @@ node 'spider.msi.umn.edu' {
        '07' => { 'public_ip' => '128.101.191.217', 'management_ip' => '172.0.0.107', 'mac' => '00:30:48:7F:2C:1C' },
     }
 
-    include 'management-network'
+    #include 'management-network'
+    management-network( "node-management" : node => "node-management" )
 
      #package { memcached: }
 

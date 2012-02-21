@@ -1,0 +1,31 @@
+<% $network.each_pair do |node_suffix, node_definition| %>
+<% if "node$node_suffix" == $node do %>
+
+# This file describes the network interfaces available on your system
+# and how to activate them. For more information, see interfaces(5).
+
+# The loopback network interface
+auto lo
+iface lo inet loopback
+
+# The primary network interface
+allow-hotplug eth0
+iface eth0 inet static
+        address 172.0.0.1
+        netmask 255.255.255.0
+        network 172.0.0.0
+        broadcast 172.0.0.255
+
+# The primary network interface
+allow-hotplug eth1
+iface eth1 inet static
+        address 128.101.191.208
+        netmask 255.255.255.0
+        network 128.101.191.0
+        broadcast 128.101.191.255
+        gateway 128.101.191.254
+        # dns-* options are implemented by the resolvconf package, if installed
+        dns-nameservers 128.101.101.101 134.84.84.84
+        dns-search msi.umn.edu
+<% end %>
+<% end %>
