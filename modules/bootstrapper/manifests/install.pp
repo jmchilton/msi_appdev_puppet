@@ -5,6 +5,7 @@ class bootstrapper::install {
     path => "/srv/tftpboot/configure_installer.sh",
     content => template('bootstrapper/configure_installer.sh.erb'),
     require => File["/srv/tftpboot"],
+    mode => 0700,
   }
 
   exec { "configure_installer":
