@@ -1,4 +1,6 @@
 class bootstrapper::install {
+  include apt-cacher-ng
+
   $bootstrapper_packages = ["tftpd-hpa", "dhcp3-server"]
 
   package { $bootstrapper_packages:
