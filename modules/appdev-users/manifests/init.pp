@@ -34,7 +34,7 @@ define setpass($hash, $file='/etc/shadow') {
     }
 }
 
-define user_hash ($hash) {
+define user_hash($hash) {
   user { "$name":
     home => "/home/$name",
     ensure => present,
@@ -59,6 +59,7 @@ define user_hash ($hash) {
 
 class appdev-users {
   include appdev-users::credentials
+
   user_hash { "chilton": 
     hash => $appdev-users::credentials::password_hash_chilton,
   }
@@ -72,7 +73,7 @@ class appdev-users {
   }
 
   user_hash { "nh" :
-    hash => $appdev-users::credentials::passwrod_hash_nh,
+    hash => $appdev-users::credentials::password_hash_nh,
   }
 
 }
