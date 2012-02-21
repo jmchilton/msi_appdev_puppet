@@ -1,0 +1,19 @@
+#!/bin/sh 
+
+echo "172.0.0.1 appdev-puppet.msi.umn.edu" >> /etc/hosts
+apt-get -y install puppet
+wget http://172.0.0.1/puppet_credentials.tar.gz -O /puppet_credentials.tar.gz
+cd /
+tar xzvf puppet_credentials.tar.gz
+rm puppet_credentials.tar.gz
+wget http://172.0.0.1/puppet.conf -O /etc/puppet/puppet.conf
+puppet agent --test
+
+# Puppet will return status code of 2 (indicating changes made which  
+# will cause installer to believe there were problems.)        
+exit 0
+
+# root@appdev-puppet:/home/chilton# puppet cert --generate spider00.msi.umn.edu
+# ...                                                     
+# root@appdev-puppet:/home/chilton# puppet cert --generate spider07.msi.umn.edu
+# tar czvf cloud_staging_puppet_credentials.tar.gz /var/lib/puppet/ssl/private_keys/spider0* /var/lib/puppet/ssl/certs/spider0* /var/lib/puppet/ssl/certs/ca.pem   

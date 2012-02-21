@@ -1,0 +1,17 @@
+#!/bin/sh
+TFTP_DIR=/srv/tftpboot
+INITRD_PATH=$TFTP_DIR/debian-installer/amd64/initrd.gz
+cd $TFTP_DIR
+NETBOOT_URL="http://d-i.debian.org/daily-images/amd64/daily/netboot/netboot.tar.gz"
+wget NETBOOT_URL -O netboot.tar.gz
+tar xzvf netboot.tar.gz
+mkdir init-root
+cp $INITRD_PATH init-root
+cd init-root
+cat $INITRD_PATH | gzip -d | cpio -i
+gunzip $INITRD_PATH
+
+REBUILD_SCRIPT=$TFTP_DIR/rebuild_image.sh
+echo "#!/bin/sh\ncd $TFTP_DIR/init-root && find . -print0 | cpio -0 -H newc -ov | gzip -c > $INITRD_PATH" > $REBUILD_SCRIPT
+chmod +x $REBUILD_SCRIPT
+
