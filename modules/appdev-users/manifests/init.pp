@@ -40,6 +40,7 @@ define user_hash ($hash) {
     ensure => present,
     groups => ["sudo"]
     require => Group["sudo"]
+    shell => "/bin/bash"
   }
 
   exec { "$name homedir":
