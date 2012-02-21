@@ -26,7 +26,7 @@ node 'spider.msi.umn.edu' {
        '07' => { 'mac' => '00:30:48:7F:2C:1C' },
     }
 
-
+    include 'management-network'
 
      #package { memcached: }
 
