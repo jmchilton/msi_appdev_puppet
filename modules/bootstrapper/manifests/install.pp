@@ -12,7 +12,7 @@ class bootstrapper::install {
     command => "/srv/tftpboot/configure_installer.sh",
     path => [ "/bin", "/usr/bin" ],
     creates => "/srv/tftpboot/rebuild_image.sh",
-    require => File["configure_installer.sh"],
+    subscribe => File["configure_installer.sh"],
   }
 
   file { "preseed.cfg":
