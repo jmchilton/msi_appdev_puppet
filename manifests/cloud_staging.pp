@@ -14,20 +14,20 @@ import "credentials.pp"
        'node07' => { 'hostname' => 'spider07', 'public_ip' => '128.101.191.217', 'management_ip' => '172.0.0.107', 'mac' => '00:30:48:7F:2C:1C' },
      }
 
-node 'spider.msi.umn.edu' {
      $nova_admin_user = "admin"
-     $api_vip = "spider.msi.umn.edu"
-     $mysql_vip = "localhost"
-     $rabbit_vip = "spider.msi.umn.edu"
-     $keystone_vip = "spider.msi.umn.edu"
-     $glance_vip = "spider.msi.umn.edu"
+     $api_vip = "node-services"
+     $mysql_vip = "node-services"
+     $rabbit_vip = "node-services"
+     $keystone_vip = "node-services"
+     $glance_vip = "node-services"
      $network_manager = "FlatDHCPManager"
-     $fixed_range = "10.1.0.0/16"
-     $flat_interface = "br100"
-     $dhcp_start= "10.1.0.2"
-     $newtork_host = "spider"
+     $fixed_range = "172.1.0.0/16"
+     $flat_interface = "eth0"
+     $dhcp_start= "172.1.0.0"
+     $newtork_host = "node-services"
      $public_interface = "eth1"
 
+node 'spider.msi.umn.edu' {
      $network_node = 'node-management'
 
      include 'management-network'
@@ -43,11 +43,15 @@ node 'spider-services.msi.umn.edu' {
 
      include 'appdev-base'
      include 'management-network'
+     include 'nova-infra-node'
 }
 
 node /^spider\d+.msi.umn.edu/ {
      $network_node = regsubst($hostname, 'spider(\d+)', 'node\1')
      include 'appdev-base'
      include 'management-network'
+     include 'nova-compute-node'
 }
+
+
 
