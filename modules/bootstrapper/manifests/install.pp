@@ -16,14 +16,14 @@ class bootstrapper::install {
 
   file { "preseed.cfg":
     path => "/srv/tftpboot/init-root/preseed.cfg",
-    content = template('bootstrapper/preseed.cfg.erb'),
+    content => template('bootstrapper/preseed.cfg.erb'),
     require => Exec["configure_installer"],
   } 
 
   exec { "build_installer":
     command => /srv/tftpboot/rebuild_image.sh",
     path => [ "/bin", "/usr/bin" ],
-    subscribe = File["preseed.cfg"],
+    subscribe => File["preseed.cfg"],
     refreshonly => true,
   }
 
