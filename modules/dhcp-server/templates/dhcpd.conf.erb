@@ -37,53 +37,13 @@ subnet 172.0.0.0 netmask 255.255.255.0 {
   filename "pxelinux.0";                
   deny unknown-clients;  
 
-  host node01 {
-    hardware ethernet 00:30:48:7F:C4:1A;
-    fixed-address node01;
-    option host-name spider01;
+<% network.each_pair do |node, node_definition| %><% if node_definition['mac']  %>
+  host <%= node %> {
+    hardware ethernet <%= node_definition['mac'] %>;
+    fixed-address <%= node %>;
+    option host-name <%= node_definition['hostname'] %>;
   }
-
-  host node00 {
-    hardware ethernet 00:30:48:C4:79:40;
-    fixed-address node00;
-    option host-name spider00;
-  }
-
-  host node03 {
-    hardware ethernet 00:30:48:7F:C4:32;
-    fixed-address node03;
-    option host-name spider03;
-  }
-
-  host node02 {
-    hardware ethernet 00:30:48:7F:C3:4C;
-    fixed-address node02;       
-    option host-name spider02;
-  }
-
-  host node05 {
-    hardware ethernet 00:30:48:7F:E4:28;
-    fixed-address node05;
-    option host-name spider05;
-  }
-
-  host node04 {
-    hardware ethernet 00:30:48:7F:E0:BC;
-    fixed-address node04;
-    option host-name spider04;
-  }
-
-  host node07 {
-    hardware ethernet 00:30:48:7F:2C:1C;
-    fixed-address node07;
-    option host-name spider07;
-  }
-
-  host node06 {
-    hardware ethernet 00:30:48:7F:45:B2;
-    fixed-address node06;
-    option host-name spider06;
-  }
+<% end %><% end %>
 
 }
 

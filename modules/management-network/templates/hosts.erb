@@ -2,6 +2,5 @@
 128.101.191.208 spider.msi.umn.edu      spider
 
 # Physical nodes on internal network
-<% network.each_pair do |node_suffix, node_definition| %><%= node_definition['management_ip'] %> node<%= node_suffix %>
+<% network.each_pair do |node, node_definition| %><%= node_definition['management_ip'] %> <%= node %>
 <% end %>
-
