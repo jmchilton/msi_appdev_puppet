@@ -1,5 +1,4 @@
 class keystone::install {                                                                   
-
   user { "keystone":
     ensure => present,
     home => "/var/lib/keystone",
@@ -12,14 +11,14 @@ class keystone::install {
     notify => [Service["nova-api"]],
     require => [                    
       Package["nova-common"],       
-    ]                               
+    ],
   }
 
   file { "/var/log/keystone":
     ensure => directory,     
     owner => "keystone",     
     mode => 0755,            
-    require => [User["keystone"], Package["keystone"]]
+    require => [User["keystone"], Package["keystone"]],
   }                                                   
 
   file { "keystone.conf":
@@ -29,7 +28,7 @@ class keystone::install {
     mode => 0600,                         
     content => template("keystone/keystone.conf.erb"),
     notify => Service["keystone"],                    
-    require => [User["keystone"], Package["keystone"]]
+    require => [User["keystone"], Package["keystone"]],
   }                                                   
 
   file { "add-keystone-user.sh":
@@ -39,7 +38,7 @@ class keystone::install {
     mode => 0700,                                    
     source => "puppet:///modules/keystone/add-keystone-user.sh",
     notify => Service["keystone"],                              
-    require => [User["keystone"], Package["keystone"]]          
+    require => [User["keystone"], Package["keystone"]],         
   }                                                             
 
   file { "initial_data.sh":
@@ -48,7 +47,7 @@ class keystone::install {
     owner => "keystone",                        
     mode => 0700,
     content => template("keystone/initial_data.sh.erb"),
-    require => [User["keystone"], Package["keystone"]]
+    require => [User["keystone"], Package["keystone"]],
   }
 
   exec { "create_keystone_db":
@@ -57,15 +56,15 @@ class keystone::install {
     unless => "mysql -uroot -p${mysql_root_password} -sr -e 'show databases' | grep -q keystone",
     notify => Exec["create_keystone_user"],
     # this *should* be already done with the require mysql::server, but apparently isn't
-    require => Class['mysql::server']
+    require => Class['mysql::server'],
   }
 
   exec { "create_keystone_user":
     command => "mysql -uroot -p${mysql_root_password} -e \"grant all on keystone.* to 'keystone'@'%' identified by '${mysql_nova_password}'\"",
     path => [ "/bin", "/usr/bin" ],
     notify => Exec["sync_keystone_db"],
-    require => Class["mysql::server"]
-    refreshonly => true
+    require => Class["mysql::server"],
+    refreshonly => true,
   }
 
 
@@ -75,7 +74,7 @@ class keystone::install {
     path => [ "/bin", "/usr/bin" ],
     notify => Exec["create_keystone_data"],
     refreshonly => true,
-    require => [File["/etc/keystone/keystone.conf"], Package['keystone'], Exec["create_keystone_user"]]
+    require => [File["/etc/keystone/keystone.conf"], Package['keystone'], Exec["create_keystone_user"]],
   }
 
   exec { "create_keystone_data":
@@ -88,7 +87,7 @@ class keystone::install {
       File["keystone.conf"],
       File["initial_data.sh"],
       Exec["sync_keystone_db"],
-    ]
+    ],
   }
 
 }
