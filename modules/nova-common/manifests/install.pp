@@ -1,5 +1,5 @@
 class nova-common::install {
-  include nova::env
+  include nova-common::env
 
   $nova_common_packages = [ "nova-common", 
                             "nova-doc", 
