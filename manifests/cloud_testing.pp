@@ -12,7 +12,7 @@ node 'appdev-dom0.msi.umn.edu' {
      $fixed_range = "10.1.0.0/16"
      $flat_interface = "br100"
      $dhcp_start= "10.1.0.2"
-     $newtork_host = "appdev-dom0"
+     $network_host = "appdev-dom0"
      $public_interface = "eth0"
      package { memcached: }
 
