@@ -8,13 +8,12 @@ class keystone::install {
   }                                
 
   package { "keystone":
-    ensure => latest,  
+    ensure => present,  
     notify => [Service["nova-api"]],
     require => [                    
       Package["nova-common"],       
     ]                               
-  }                                 
-
+  }
 
   file { "/var/log/keystone":
     ensure => directory,     
@@ -22,7 +21,6 @@ class keystone::install {
     mode => 0755,            
     require => [User["keystone"], Package["keystone"]]
   }                                                   
-
 
   file { "keystone.conf":
     path => "/etc/keystone/keystone.conf",
@@ -59,17 +57,14 @@ class keystone::install {
     unless => "mysql -uroot -p${mysql_root_password} -sr -e 'show databases' | grep -q keystone",
     notify => Exec["create_keystone_user"],
     # this *should* be already done with the require mysql::server, but apparently isn't
-    require => [Service['mysql'], Class['mysql::server']]
+    require => Class['mysql::server']
   }
 
   exec { "create_keystone_user":
-    # FIXME:
-    # someone really need to get db access limited to just
-    # the controller nodes
     command => "mysql -uroot -p${mysql_root_password} -e \"grant all on keystone.* to 'keystone'@'%' identified by '${mysql_nova_password}'\"",
     path => [ "/bin", "/usr/bin" ],
     notify => Exec["sync_keystone_db"],
-    require => Service['mysql'],
+    require => Class["mysql::server"]
     refreshonly => true
   }
 
@@ -80,7 +75,7 @@ class keystone::install {
     path => [ "/bin", "/usr/bin" ],
     notify => Exec["create_keystone_data"],
     refreshonly => true,
-    require => [File["/etc/keystone/keystone.conf"], Package['keystone']]
+    require => [File["/etc/keystone/keystone.conf"], Package['keystone'], Exec["create_keystone_user"]]
   }
 
   exec { "create_keystone_data":
@@ -89,9 +84,10 @@ class keystone::install {
     path => [ "/bin", "/usr/bin" ],
     unless => "keystone-manage user list | grep -q admin",
     require => [
-      Package['keystone'],
-      File['keystone.conf'],
-      File["initial_data.sh"]
+      Package["keystone"],
+      File["keystone.conf"],
+      File["initial_data.sh"],
+      Exec["sync_keystone_db"],
     ]
   }
 

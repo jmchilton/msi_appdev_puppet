@@ -9,4 +9,3 @@ TENANT=$3
 
 keystone-manage tenant list | grep -q ${TENANT} || keystone-manage tenant add ${TENANT}
 keystone-manage user add ${USER} ${PASSWORD} ${TENANT}
-

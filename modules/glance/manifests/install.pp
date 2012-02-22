@@ -1,19 +1,20 @@
 class glance::install {                                                                   
+  include glance::config
   $glance_packages = [ "glance-common", "glance", "python-glance", "python-swift" ]       
 
   user { "glance":
     ensure => present,
-    home => "/var/lib/glance",
+    home => $glance::config::home,
     shell => "/bin/bash",     
-    require => Package['glance']
+    require => Package["glance"]
   }                             
 
   package { $glance_packages:
-    ensure => latest,        
+    ensure => present,        
     notify => Service["nova-api"],
     require => [                  
-      Package["nova-common"],     
-    ]                             
+      Class["nova-common"],     
+    ],
   }                               
 
   file { "glance-api.conf":
@@ -23,8 +24,9 @@ class glance::install {
     mode => 0600,                         
     content => template("glance/glance-api.conf.erb"),
     notify => Service["glance-api"],                  
-    require => [Package["glance"], User["glance"]],   
-  }                                                   
+    require => [Package["glance"], 
+                User["glance"]],   
+  }                                                  
 
 
   file { "glance-api-paste.ini":
@@ -101,13 +103,10 @@ class glance::install {
   }
 
   exec { "create_glance_user":
-    # FIXME:
-    # someone really need to get db access limited to just
-    # the controller nodes
     command => "mysql -uroot -p${mysql_root_password} -e \"grant all on glance.* to 'glance'@'%' identified by '${mysql_nova_password}'\"",
     path => [ "/bin", "/usr/bin" ],
     notify => Exec["sync_glance_db"],
-    require => Service['mysql'],
+    require => [Service['mysql'], Class['mysql::server']],
     refreshonly => true
   }
 
