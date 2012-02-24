@@ -30,4 +30,4 @@ keystone-manage $* endpointTemplates add RegionOne keystone http://<%= api_vip %
 
 # Tokens
 keystone-manage $* token add <%= keystone_admin_token %> <%= nova_admin_user %> <%= nova_admin_user %> 2028-02-05T00:00
-keystone-manage $* credential add <%= nova_admin_user %> EC2 '<%= nova_admin_user %>' '<%= nova_admin_password %>' <%= nova_admin_user %>
+keystone-manage $* credentials add <%= nova_admin_user %> EC2 '<%= nova_admin_user %>' '<%= nova_admin_password %>' <%= nova_admin_user %>

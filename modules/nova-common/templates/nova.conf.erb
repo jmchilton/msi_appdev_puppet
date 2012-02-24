@@ -2,9 +2,11 @@
 --dhcpbridge=/usr/bin/nova-dhcpbridge
 --logdir=/var/log/nova
 --state_path=/var/lib/nova
---lock_path=/var/lock/nova
+<% if has_variable?('force_dhcp_release') and force_dhcp_release then -%>
 --force_dhcp_release
---iscsi_helper=tgtadm
+<% end %>
+--lock_path=/var/lock/nova
+#--iscsi_helper=tgtadm
 --connection_type=libvirt
 --sql_connection=mysql://nova:<%= mysql_nova_password %>@<%= mysql_vip %>/nova
 --rabbit_host=<%= rabbit_vip %>
@@ -16,8 +18,10 @@
 --cc_host=<%= api_vip %>
 --api_paste_config=/etc/nova/api-paste.ini
 --network_manager=nova.network.manager.<%= network_manager %>
+--my_ip=<%= network[network_node]['management_ip'] %>
+#--multi_host=true
 <% if has_variable?('network_host') and network_host then -%>
---network_host=<% network_host %>
+--network_host=<%= network_host %>
 <% end %>
 <% if has_variable?('scheduler') and scheduler then -%>
 --scheduler_driver=<%= scheduler %>
@@ -51,6 +55,9 @@
 <% if has_variable?('num_networks') -%>
 --num_networks=<%= num_networks %>
 <% end %>
+<% if has_variable?('flat_network_bridge') -%>
+--flat_network_bridge=<%= flat_network_bridge %>
+<% end %>
 <% if has_variable?('dhcp_start') -%>
 --flat_network_dhcp_start=<%= dhcp_start %>
 <% end %>
@@ -59,4 +66,13 @@
 <% end -%>
 <% if has_variable?('public_interface') and public_interface then -%>
 --public_interface=<%= public_interface %>
+<% end -%>
+<% if has_variable?('network_size') then -%>
+--network_size=<%= network_size %>
+<% end -%>
+<% if has_variable?('flat_injected') then -%>
+--flat_injected=<%= flat_injected %>
+<% end -%>
+<% if has_variable?('multi_host') then -%>
+--multi_host=<%= multi_host %>
 <% end -%>

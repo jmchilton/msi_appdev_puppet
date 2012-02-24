@@ -70,7 +70,7 @@ class keystone::install {
 
   # this is all totally brute force
   exec { "sync_keystone_db":
-    command => "keystone-manage db_sync",
+    command => "keystone-manage sync_database",
     path => [ "/bin", "/usr/bin" ],
     notify => Exec["create_keystone_data"],
     refreshonly => true,

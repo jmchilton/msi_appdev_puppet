@@ -21,11 +21,16 @@ import "credentials.pp"
      $keystone_vip = "node-services"
      $glance_vip = "node-services"
      $network_manager = "FlatDHCPManager"
-     $fixed_range = "172.1.0.0/16"
+     $fixed_range = "172.1.0.0/24"
      $flat_interface = "eth0"
-     $dhcp_start= "172.1.0.0"
-     $newtork_host = "node-services"
+     $dhcp_start= "172.1.0.8"
+     $network_host = "node-services"
+     $network_size = 255
      $public_interface = "eth1"
+     $flat_network_bridge = "br100"
+
+     # Prevents nova-network, nova-api from starting up
+     # $flat_injected = "False"
 
 node 'spider.msi.umn.edu' {
      $network_node = 'node-management'
@@ -52,6 +57,3 @@ node /^spider\d+.msi.umn.edu/ {
      include 'management-network'
      include 'nova-compute-node'
 }
-
-
-
