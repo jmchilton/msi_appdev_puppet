@@ -73,4 +73,9 @@ class appdev-users {
     hash => $appdev-users::credentials::password_hash_trevor,
   }
 
+  user_hash { "debertin":
+    hash => $appdev-users::credentials::password_hash_debertin,
+  }
+
+
 }
